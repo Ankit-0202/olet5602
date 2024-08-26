@@ -784,29 +784,19 @@ Lets analyse the results of the overall study as a comparison with the with the 
 The first and main outcome of the study is classifying target genes as target genes. However it may useful to get a probabilities for each gene. This was part of the motivation to use SVM as our first and main source of classification. Below is a table with the probabilities. Potentially using this 
 
 ```{r}
-# Make predictions and obtain probabilities
 svm_predictions <- predict(svm_model, newdata = combined_data, probability = TRUE)
 
-# Extract probabilities
 probabilities <- attr(svm_predictions, "probabilities")
 
 # Combine predictions with the original data and probabilities
 results <- data.frame(
   Actual_Label = combined_data$label,
   Predicted_Label = svm_predictions,
-  Probability_Class1 = probabilities[, "OSN"],
-  Probability_Class2 = probabilities[, "Other"]
+  OSN_Prob = probabilities[, "OSN"],
+  Other_Prob = probabilities[, "Other"]
 )
 
-# Display the table with combined data, actual labels, and probabilities
 print(head(results))
-
-# Filter rows where the predicted label is "OSN"
-osn_predictions <- results[results$Predicted_Label == "OSN", ]
-
-# Display the filtered results
-print(head(osn_predictions))
-
 ```
 
 Before we continue and analyse the classification of the various models, let's visit `OSN_target_genes`
@@ -826,54 +816,62 @@ Using `OSN_target_genes` as a comparison with the model, suggests that SVN overc
 
 # Create a vector of all labels predicted as "OSN"
 osn_labels <- rownames(osn_predictions)
-length(osn_labels)
 
-# Display the vector
-print(osn_labels)
+
+length(osn_labels)
+head(osn_labels, 100)
 
 ```
 
 
 The Random Forest model slightly outperforms the SVM model in identifying OSN genes, with a higher AUC socre of 0.8254 compared to SMV's score of 0.7669. This indicates a stronger overall classification performance. RF correctly identifies more true OSN genes but has a higher rate of false positives. In contrast, SVM has fewer false positives but slightly misses more true oSN genes. The choice between the two should be made based on whether too maximise true positive identification or minimizing false positives.
 
+Probabilities
 
 ```{r}
-# Make predictions using the tuned Random Forest model
+# Make predictions using the Random Forest model
 rf_predictions <- predict(tuned_rf_model, newdata = combined_data)
 
-# Create a logical vector for the specific label "OSN"
-is_osn_rf <- rf_predictions == "OSN"
+# Combine predictions with the original data and probabilities
+results_rf <- data.frame(
+  Actual_Label = combined_data$label,
+  Predicted_Label = predict(tuned_rf_model, newdata = combined_data)
+)
 
-length(is_osn_rf)
+# Display the table with combined data, actual labels, and probabilities
+print(head(results_rf))
 
-# Extract row names where the predicted label is "OSN"
-osn_rownames_rf <- rownames(combined_data)[is_osn_rf]
+```
 
-# Display the row names
-print(osn_rownames_rf)
+
+
+```{r}
+
+# Filter rows where the predicted label is "OSN"
+osn_predictions_rf <- results_rf[results_rf$Predicted_Label == "OSN", ]
+
+# List of rownames where predicted label is "OSN"
+osn_rownames_rf <- rownames(combined_data)[results_rf$Predicted_Label == "OSN"]
+length(osn_rownames_rf)
+head(osn_rownames_rf, 100)
 ```
 
 
 ```{r}
 
-# Make predictions using the XGBoost model
 xgb_predictions <- predict(xgb_model_tuned, newdata = combined_data)
 
-# Debugging output to understand the structure
 print(str(xgb_predictions))
 
-# Adjust the following line based on the structure of xgb_predictions
 predicted_classes_xgb <- ifelse(xgb_predictions > 0.5, "OSN", "Other")
 
-# Create a logical vector for the specific label "OSN"
 is_osn_xgb <- predicted_classes_xgb == "OSN"
 print(length(is_osn_xgb))
 
-# Extract row names where the predicted label is "OSN"
 osn_rownames_xgb <- rownames(combined_data)[is_osn_xgb]
 
-# Display the row names
-print(osn_rownames_xgb)
+length(osn_rownames_xgb)
+head(osn_rownames_xgb, 100)
 
 ```
 
