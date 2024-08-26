@@ -88,6 +88,7 @@ suppressPackageStartupMessages({
     library(reshape2)
     library(kernlab)
     library(caret)
+    library(pheatmap)
     library(randomForest)
     library(adabag)
     library(gbm)
@@ -293,6 +294,80 @@ plot(pca.polii$x[,1], pca.polii$x[,2], col=grp.col.polii[grp.polii], pch=19, cex
 # Correctly label the samples for PolII
 calibrate::textxy(pca.polii$x[,1], pca.polii$x[,2], labs=grp.polii, cex=0.5)
 ```
+
+\newpage
+
+# Further IDA Analysis
+
+Below are heat maps of which show the top 100 most variable gene-associated levels for each data set. These heat maps are useful for identifying patterns of gene expression and histone modification that can correlate with different stages of ESC differentiation. They help identify specific genes and pathways which are involved in differentiation which can be further validated via analysis. The color gradient in each heat map typical ranges from blue (low expression or modification) to red (high expression or modification). The dendograms on the columns and rows indicate clustering (hierarchical), grouping genes and time points based on similarity. These clusters suggest co-regulation or similar functional roles across genes.
+
+
+```{r}
+
+# Top 100 most variable genes in the Transcriptome
+top_genes_transcriptome <- Transcriptome[order(apply(Transcriptome, 1, var), decreasing = TRUE)[1:100], ]
+
+# Heatmap for Transcriptome
+pheatmap(top_genes_transcriptome, cluster_rows = TRUE, cluster_cols = TRUE, 
+         show_rownames = FALSE, show_colnames = TRUE, 
+         color = colorRampPalette(c("navy", "white", "firebrick3"))(50),
+         main = "Heatmap of Top 100 Most Variable Genes in Transcriptome")
+```
+
+
+
+```{r}
+# Select top 100 most variable genes from the Proteome
+top_genes_proteome <- Proteome[order(apply(Proteome, 1, var), decreasing = TRUE)[1:100], ]
+
+# Heatmap for Proteome
+pheatmap(top_genes_proteome, cluster_rows = TRUE, cluster_cols = TRUE, 
+         show_rownames = FALSE, show_colnames = TRUE, 
+         color = colorRampPalette(c("blue", "white", "darkred"))(50),
+         main = "Heatmap of Top 100 Most Variable Genes in Proteome")
+```
+In the above heatmap regarding the top 100 most variable genes within the transcriptome dataset, from the 1hr to 6hr time period most genes exhibit lower levels of expression, suggesting that many of the top variable genes are not highly active immediately after differentiation begins. This ramps up at later time points, particularity 48hr and 72hr showing distinct patterns where some genes are highly expressed while others remain low. This suggest high activity meaning certain genes are playing critical roles in later stages of differentiation. The key differentiation between the transcriptome and proteome heatmaps are the levels of neutral activity during the inital hours with Proteome having a higher level of activtiy throughout most time periods.
+
+
+
+Time-Course Line Plots of Gene Expression:
+Below is a graph
+
+
+```{r}
+library(reshape2)
+library(ggplot2)
+
+# Subset key genes for visualization
+key_genes <- c("SOX2", "NANOG") 
+
+# Subset and melt Transcriptome data
+key_genes_transcriptome <- Transcriptome[key_genes, ]
+key_genes_transcriptome_melt <- melt(key_genes_transcriptome)
+colnames(key_genes_transcriptome_melt) <- c("Gene", "Timepoint", "Expression")
+key_genes_transcriptome_melt$DataType <- "Transcriptome"
+
+# Subset and melt Proteome data
+key_genes_proteome <- Proteome[key_genes, ]
+key_genes_proteome_melt <- melt(key_genes_proteome)
+colnames(key_genes_proteome_melt) <- c("Gene", "Timepoint", "Expression")
+key_genes_proteome_melt$DataType <- "Proteome"
+
+# Combine Transcriptome and Proteome data
+combined_key_genes_melt <- rbind(key_genes_transcriptome_melt, key_genes_proteome_melt)
+
+# Plot combined data
+ggplot(combined_key_genes_melt, aes(x = Timepoint, y = Expression, color = Gene, group = Gene)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  facet_wrap(~DataType, scales = "free_y") +  
+  theme_minimal() +
+  labs(title = "Time-Course Expression of Key Genes in Transcriptome and Proteome",
+       x = "Timepoint", y = "Expression Level") +
+  scale_color_manual(values = c("SOX2" = "blue", "NANOG" = "red"))
+
+```
+The expression of SOX2 in the transcriptome starts at a slightly elevated level at 0hr, peaks around 6hr and then begins to steadily decline. The Proteome shows SOX2 starting slighlt postive expression at 0hr, peaks early at 1hr and thens shows similar decline. Both exhibit a general trend of initial upregulation followed by downregulation across time in both the proteome and transcriptome datasets. This suggests that the transcriptonal activtiy might be intially high to kickstart certain cellular proecess but is followed by a reduction as cells progress through differential.
 
 \newpage
 
