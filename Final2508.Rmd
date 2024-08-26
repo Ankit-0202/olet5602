@@ -528,7 +528,7 @@ svm_model <- svm(label ~ ., data = downsampled_train_data, kernel = "radial", pr
 
 ### Random Forest
 
-Here we train our second model on the down sampled data. The dataset performed best with better with a larger number of trees, and so we have used 1000 for our hyperparamater. 
+Here we train our second model on the down sampled data. The dataset performed best with better with a larger number of trees, and so we have used 1000 for our number of trees. 
 
 
 ```{r}
@@ -537,7 +537,7 @@ rf_model <- randomForest(label ~ ., data = downsampled_train_data, ntree = 1000)
 
 ```
 
-Here we improve on our model by performing cross-validation while training the Random Forest, and finetuning our hyperaparamaters as to not over fit the model.
+Here we improve on our model by performing cross-validation while training the Random Forest, and fine-tuning our hyperparameters as to not over fit the model.
 
 ```{r}
 
