@@ -16,12 +16,8 @@ output:
         google: Montserrat
       heading_font:
         google: Merriweather
-<<<<<<< HEAD
-  pdf_document: default
-=======
   pdf_document:
     extra_dependencies: ["geometry"]
->>>>>>> 8f89a3e (Add a minor change)
 header-includes:
   - \usepackage{listings}
   - \lstset{breaklines=true}
@@ -440,14 +436,8 @@ print(dim(downsampled_train_data))
 
 ```
 
-## Model Training
-<<<<<<< HEAD
-We train two machine learning models, SVM (with the radial kernel) and Random Forest, using the balanced training dataset.
-
-Two models, SVM with a radial kernel and Random Forest, are trained using the balanced dataset to compare their performance under balanced class distribution conditions.
-=======
+## Model Trainingns.
 We train three machine learning models, SVM (with the radial kernel), Random Forest, and a Neural Network, using the balanced training dataset performance under balanced class distribution conditions.
->>>>>>> 8f89a3e (Add a minor change)
 
 ### SVM
 
@@ -471,10 +461,6 @@ rf_model <- randomForest(label ~ ., data = downsampled_train_data, ntree = 1000)
 
 ```
 
-<<<<<<< HEAD
-We can then perform cross-validation and finetune the hyperparameters, being careful not to overfit the model.
-=======
-Here, we can see the importance of each of the features in the model.
 
 ```{r}
 
@@ -500,7 +486,6 @@ ggplot(feature_importance_df, aes(x = reorder(Feature, Importance), y = Importan
 ```
 
 Here we improve on our model by performing cross-validation while training the Random Forest, and finetuning our hyperaparamters as to not over fit the model.
->>>>>>> 8f89a3e (Add a minor change)
 
 ```{r}
 
