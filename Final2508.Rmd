@@ -819,7 +819,7 @@ Using `OSN_target_genes` as a comparison with the model, suggests that SVN overc
 ```{r}
 
 # Create a vector of all labels predicted as "OSN"
-osn_labels <- rownames(osn_predictions)
+osn_labels <- rownames(svm_predictions)
 
 
 length(osn_labels)
