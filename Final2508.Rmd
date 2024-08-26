@@ -812,18 +812,21 @@ print(head(osn_predictions))
 Before we continue and analyse the classification of the various models, let's visit `OSN_target_genes`
 
 ```{r}
+
 length(OSN_target_genes)
 OSN_target_genes
+
 ```
 
 
 
-Using `OSN_target_genes` as a comparison with model, suggests that SVN overclassifies target genes. This may suggest a need not for downsampling or it may suggest that there are other methods of dealing with class imabalance. 
+Using `OSN_target_genes` as a comparison with the model, suggests that SVN overclassifies target genes. This may suggest a need not for downsampling or it may suggest that there are other methods of dealing with class imabalance. 
 
 ```{r}
-length(osn_labels)
+
 # Create a vector of all labels predicted as "OSN"
 osn_labels <- rownames(osn_predictions)
+length(osn_labels)
 
 # Display the vector
 print(osn_labels)
@@ -852,41 +855,26 @@ print(osn_rownames_rf)
 
 
 ```{r}
+
 # Make predictions using the XGBoost model
 xgb_predictions <- predict(xgb_model_tuned, newdata = combined_data)
 
-# Assuming xgb_predictions is a matrix with probabilities
-# Convert probabilities to predicted classes
-predicted_classes_xgb <- ifelse(xgb_predictions[, "OSN"] > 0.5, "OSN", "Other")
+# Debugging output to understand the structure
+print(str(xgb_predictions))
+
+# Adjust the following line based on the structure of xgb_predictions
+predicted_classes_xgb <- ifelse(xgb_predictions > 0.5, "OSN", "Other")
 
 # Create a logical vector for the specific label "OSN"
 is_osn_xgb <- predicted_classes_xgb == "OSN"
-length(is_osn_xgb)
+print(length(is_osn_xgb))
 
 # Extract row names where the predicted label is "OSN"
 osn_rownames_xgb <- rownames(combined_data)[is_osn_xgb]
 
 # Display the row names
 print(osn_rownames_xgb)
-```
 
-```{r}
-# Make predictions using the neural network model
-nn_predictions <- predict(nn_model, newdata = combined_data, probability = TRUE)
-
-# Extract the predicted classes
-# Assuming nn_predictions is a matrix with probabilities for each class
-predicted_classes_nn <- colnames(nn_predictions)[apply(nn_predictions, 1, which.max)]
-
-# Create a logical vector for the specific label "OSN"
-is_osn_nn <- predicted_classes_nn == "OSN"
-length(is_osn_nn)
-
-# Extract row names where the predicted label is "OSN"
-osn_rownames_nn <- rownames(combined_data)[is_osn_nn]
-
-# Display the row names
-print(osn_rownames_nn)
 ```
 
 
