@@ -95,6 +95,7 @@ suppressPackageStartupMessages({
     library(ggplotify)
     library(xgboost)
     library(nnet)
+    library(RefManageR)
     library(pROC)
     library(doParallel)
     library(calibrate)
@@ -161,7 +162,7 @@ plot(pca.proteome$x[,1], pca.proteome$x[,2], col=grp.col[grp], pch=19, cex=2,
 ```
 
 
-### h3k4me3
+### H3K4ME3
 
 ```{r}
 # PCA analysis on the correlation matrix of the H3K4me3 data
@@ -183,7 +184,7 @@ calibrate::textxy(pca.h3k4me3$x[,1], pca.h3k4me3$x[,2], labs=grp, cex=0.5)
 
 ```
 
-### H3K27me3
+### H3K27ME3
 
 ```{r}
 
@@ -206,7 +207,7 @@ calibrate::textxy(pca.h3k27me3$x[,1], pca.h3k27me3$x[,2], labs=grp.h3k27me3, cex
 
 ```
 
-### H3K27ac
+### H3K27AC
 
 ```{r}
 
@@ -230,7 +231,7 @@ calibrate::textxy(pca.h3k27ac$x[,1], pca.h3k27ac$x[,2], labs=grp.h3k27ac, cex=0.
 ```
 
 
-### H3K4me1
+### H3K4ME1
 
 ```{r}
 # PCA analysis for H3K4me1 data
@@ -251,7 +252,7 @@ plot(pca.h3k4me1$x[,1], pca.h3k4me1$x[,2], col=grp.col.h3k4me1[grp.h3k4me1], pch
 calibrate::textxy(pca.h3k4me1$x[,1], pca.h3k4me1$x[,2], labs=grp.h3k4me1, cex=0.5)
 ```
 
-### H3K9me2
+### H3K9ME2
 
 ```{r}
 # PCA analysis for H3K9me2 data
@@ -274,7 +275,7 @@ calibrate::textxy(pca.h3k9me2$x[,1], pca.h3k9me2$x[,2], labs=grp.h3k9me2, cex=0.
 ```
 
 
-### PolII
+### Pol III
 
 ```{r}
 # PCA analysis for PolII data
@@ -392,7 +393,6 @@ genes <- intersect(genes, rownames(H3K4me1))
 genes <- intersect(genes, rownames(H3K9me2))
 genes <- intersect(genes, rownames(PolII))
 ```
-
 
 ```{r}
 # Filter each dataset for the common genes
@@ -777,16 +777,36 @@ print(paste("Final Random Forest Test AUC:", auc(rf_test_roc)))
 
 ```
 
-## Results
+# Results
 Lets analyse the results of the overall study.
 
-# Future Directions:
 
-**Model Improvement:**
+
+## Future Directions:
+
+### Model Improvement
+
 Further hyperparameter tuning using automated methods like grid search or random search could refine the model's accuracy. Additionally, exploring ensemble methods that combine predictions from several models might yield better results.
 
-**Data Expansion:**
+### Data Expansion
+
 Incorporating additional omics layers, such as metabolomics or additional transcription factor binding profiles, could help to improve the model's predictive power and generalisability.
 
-**Integration with Clinical Data:**
+### Integration with Clinical Data
+
 Linking omics profiles with clinical outcomes could also be explored to improve the translational impact of the research.
+
+
+\newpage
+
+# Reference List
+
+
+
+
+
+
+
+
+
+
