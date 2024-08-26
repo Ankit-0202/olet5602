@@ -24,14 +24,13 @@ header-includes:
 
 # Introduction
 
-**Aim:**
+## Aim
+
 The aim of the project is to classify genes as targets for novel transcription factors. The focus of the study in particularly on Sox2 and Nanog (of the OSN Factors::w Oct4, Sox2, Nanog) embryonic stem cell (ESC) differentiation. 
 
 This is a particularly important, and ongoing, area of research as there is some evidence that OSN factors are regulators of stem cell maintenance.
 
-**Background:**
-
-**Background:**
+## Background
 
 Embryonic stem cells (ESCs) differentiate into a diverse array of cell types, a process fundamental to development. The regulation of ESC differentiation and cell fate decisions is intricately controlled by transcription factors. These transcription factors operate within complex transcriptional networks that influence gene expression through direct binding to DNA and interaction with other regulatory proteins ([Theunissen and Jaenisch, 2017](https://doi.org/10.1038/nrm.2017.15)).
 
@@ -41,7 +40,7 @@ Recent advancements in omics technologies have enabled high-temporal-resolution 
 
 In this study, we aim to predict novel target genes of Sox2 and Nanog by leveraging multi-omics data from ESC differentiation experiments. By analyzing changes in gene expression, protein interactions, and epigenetic modifications, we seek to identify new substrates of these critical transcription factors. This approach will enhance our understanding of the transcriptional regulation of ESC differentiation and contribute to the development of more precise strategies for manipulating stem cell behavior in regenerative medicine.
 
-**Dataset Overview:**
+## Dataset Overview
 
 The data collects time-course differentiation of genes at various omics layers. The ones that the study will focus on are below.
 
@@ -53,7 +52,10 @@ For the Purposes of this study we refer to OSN Labels as genes that target for t
 
 - **Epigenome:** Time-course ESC differentation epigonme profiles of 6 histone marks.
 
-# EDA
+\newpage
+
+# Exploratory Data Analysis (EDA)
+
 ## Load Required Libraries and Data
 
 We start by loading the necessary R packages and the dataset `Final_Project_ESC.RData`, which contains the transcriptome, proteome, and epigenome data, along with a subset of known Sox2/Nanog target genes.
@@ -290,6 +292,8 @@ plot(pca.polii$x[,1], pca.polii$x[,2], col=grp.col.polii[grp.polii], pch=19, cex
 # Correctly label the samples for PolII
 calibrate::textxy(pca.polii$x[,1], pca.polii$x[,2], labs=grp.polii, cex=0.5)
 ```
+
+\newpage
 
 # Classification
 
