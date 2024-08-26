@@ -552,7 +552,6 @@ tuned_rf_model <- train(label ~ ., data = downsampled_train_data,
 
 # Plotting tuning results
 plot(tuned_rf_model$finalModel, main="Random Forest Tuning")
-
 ```
 
 Before conducting proper evaluation later in this report, we can briefly evaluate the performance of this model.
@@ -777,15 +776,117 @@ print(paste("Final Random Forest Test AUC:", auc(rf_test_roc)))
 
 ```
 
-# Results
-Lets analyse the results of the overall study.
+## Results
+Lets analyse the results of the overall study as a comparison with the with the previous study. 
 
+The first and main outcome of the study is classifying target genes as target genes. However it may useful to get a probabilities for each gene. This was part of the motivation to use SVM as our first and main source of classification. Below is a table with the probabilities. Potentially using this 
+
+```{r}
+# Make predictions and obtain probabilities
+svm_predictions <- predict(svm_model, newdata = combined_data, probability = TRUE)
+
+# Extract probabilities
+probabilities <- attr(svm_predictions, "probabilities")
+
+# Combine predictions with the original data and probabilities
+results <- data.frame(
+  Actual_Label = combined_data$label,
+  Predicted_Label = svm_predictions,
+  Probability_Class1 = probabilities[, "OSN"],
+  Probability_Class2 = probabilities[, "Other"]
+)
+
+# Display the table with combined data, actual labels, and probabilities
+print(head(results))
+
+# Filter rows where the predicted label is "OSN"
+osn_predictions <- results[results$Predicted_Label == "OSN", ]
+
+# Display the filtered results
+print(head(osn_predictions))
+
+```
+
+Before we continue and analyse the classification of the various models, let's visit `OSN_target_genes`
+
+```{r}
+length(OSN_target_genes)
+OSN_target_genes
+```
+
+
+
+Using `OSN_target_genes` as a comparison with model, suggests that SVN overclassifies target genes. This may suggest a need not for downsampling or it may suggest that there are other methods of dealing with class imabalance. 
+
+```{r}
+length
+# Create a vector of all labels predicted as "OSN"
+osn_labels <- rownames(osn_predictions)
+
+# Display the vector
+print(osn_labels)
+
+```
+
+```{r}
+# Make predictions using the tuned Random Forest model
+rf_predictions <- predict(tuned_rf_model, newdata = combined_data)
+
+# Create a logical vector for the specific label "OSN"
+is_osn_rf <- rf_predictions == "OSN"
+
+# Extract row names where the predicted label is "OSN"
+osn_rownames_rf <- rownames(combined_data)[is_osn_rf]
+
+# Display the row names
+print(osn_rownames_rf)
+```
+
+
+```{r}
+# Make predictions using the XGBoost model
+xgb_predictions <- predict(xgb_model_tuned, newdata = combined_data)
+
+# Assuming xgb_predictions is a matrix with probabilities
+# Convert probabilities to predicted classes
+predicted_classes_xgb <- ifelse(xgb_predictions[, "OSN"] > 0.5, "OSN", "Other")
+
+# Create a logical vector for the specific label "OSN"
+is_osn_xgb <- predicted_classes_xgb == "OSN"
+
+# Extract row names where the predicted label is "OSN"
+osn_rownames_xgb <- rownames(combined_data)[is_osn_xgb]
+
+# Display the row names
+print(osn_rownames_xgb)
+```
+
+```{r}
+# Make predictions using the neural network model
+nn_predictions <- predict(nn_model, newdata = combined_data, probability = TRUE)
+
+# Extract the predicted classes
+# Assuming nn_predictions is a matrix with probabilities for each class
+predicted_classes_nn <- colnames(nn_predictions)[apply(nn_predictions, 1, which.max)]
+
+# Create a logical vector for the specific label "OSN"
+is_osn_nn <- predicted_classes_nn == "OSN"
+
+# Extract row names where the predicted label is "OSN"
+osn_rownames_nn <- rownames(combined_data)[is_osn_nn]
+
+# Display the row names
+print(osn_rownames_nn)
+```
 
 
 ## Future Directions:
 
 ### Model Improvement
 
+**Methods of mitigating Class Imbalance** - at the moment we have used Ensemble models, and downsampling to mitigate the massive class imbalance. It may be worth looking into other methods, or even not accounting for the imblance and training the models. Our results show clear overclassification of OSN which may be from the downsampling.
+
+**Model Improvement:**
 Further hyperparameter tuning using automated methods like grid search or random search could refine the model's accuracy. Additionally, exploring ensemble methods that combine predictions from several models might yield better results.
 
 ### Data Expansion
@@ -800,8 +901,6 @@ Linking omics profiles with clinical outcomes could also be explored to improve 
 \newpage
 
 # Reference List
-
-
 
 
 
