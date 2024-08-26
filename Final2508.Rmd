@@ -16,7 +16,12 @@ output:
         google: Montserrat
       heading_font:
         google: Merriweather
+<<<<<<< HEAD
   pdf_document: default
+=======
+  pdf_document:
+    extra_dependencies: ["geometry"]
+>>>>>>> 8f89a3e (Add a minor change)
 header-includes:
   - \usepackage{listings}
   - \lstset{breaklines=true}
@@ -296,11 +301,14 @@ calibrate::textxy(pca.polii$x[,1], pca.polii$x[,2], labs=grp.polii, cex=0.5)
 \newpage
 
 # Classification
+The main challenge of this study will be to classify. The task is to classify, genes as a target gene for a subset of the target genes identified in a larger previous study (Kim et al., 2020) on the same topic: which identified targets over multiomics datasets (TF ChIP-seq, transcriptome, epigenome, proteome, and 3D chromatin conformation data). 
 
 ## Filter and Combine Datasets
 In order to properly model and predicting novel transcription factors target genes we join the 8 datasets together and perform our calculations on the larger dataset.
 
 To ensure consistency across datasets, we filter each dataset to include only the common genes present in all omics layers. We then combine these filtered datasets into a single data frame for further analysis.
+
+*We can do this as the timepoints for all the datasets are consistent. Allowing for prediction on on gene information from different omics layers.*
 
 ```{r}
 # Verify all data has the same set of genes
@@ -392,6 +400,12 @@ test_data <- combined_data[-train_index, ]
 # Reassign the label column to test_data
 test_data$label <- combined_data[-train_index, "label"]
 
+```
+
+As you can see below there is a large imbalance between OSN and other classes. Not addressed right now could lead to biases later on in the model, especially with a large imbalance like that shown.
+
+```{r distributions_of_labels}
+
 # Check the distribution of labels in the training and test sets
 print("Training set label distribution:")
 print(table(train_data$label))
@@ -427,11 +441,17 @@ print(dim(downsampled_train_data))
 ```
 
 ## Model Training
+<<<<<<< HEAD
 We train two machine learning models, SVM (with the radial kernel) and Random Forest, using the balanced training dataset.
 
 Two models, SVM with a radial kernel and Random Forest, are trained using the balanced dataset to compare their performance under balanced class distribution conditions.
+=======
+We train three machine learning models, SVM (with the radial kernel), Random Forest, and a Neural Network, using the balanced training dataset performance under balanced class distribution conditions.
+>>>>>>> 8f89a3e (Add a minor change)
 
 ### SVM
+
+The first model we train is a SVM with a radial curve. SVMS are well suited to working with higher dimension data, and thus the studies first choice at modeling the data. The Radial kernel (or Radial Basis Function) and can be quite effective at mapping non-linear data, high-dim data. 
 
 ```{r}
 
@@ -442,13 +462,45 @@ svm_model <- svm(label ~ ., data = downsampled_train_data, kernel = "radial", pr
 
 ### Random Forest
 
+Here we train our second model on the down sampled data. The dataset performed best with better with a larger number of trees, and so we have used 1000 for our hyperparamater. 
+
+
 ```{r}
 # Train a Random Forest model
 rf_model <- randomForest(label ~ ., data = downsampled_train_data, ntree = 1000)
 
 ```
 
+<<<<<<< HEAD
 We can then perform cross-validation and finetune the hyperparameters, being careful not to overfit the model.
+=======
+Here, we can see the importance of each of the features in the model.
+
+```{r}
+
+
+# Extract feature importance
+importance_rf <- importance(rf_model)
+
+# Create a data frame for plotting
+feature_importance_df <- data.frame(
+  Feature = rownames(importance_rf),
+  Importance = importance_rf[, "%IncMSE"]
+)
+
+# Plot feature importance using ggplot2
+ggplot(feature_importance_df, aes(x = reorder(Feature, Importance), y = Importance)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Feature Importance from Random Forest Model",
+       x = "Feature",
+       y = "Increase in MSE") +
+  coord_flip()
+
+```
+
+Here we improve on our model by performing cross-validation while training the Random Forest, and finetuning our hyperaparamters as to not over fit the model.
+>>>>>>> 8f89a3e (Add a minor change)
 
 ```{r}
 
@@ -499,7 +551,7 @@ print(bagged_trees)
 
 ### Gradient Boosting with Hyperparameter Tuning Using xgboost (using parallel processing)
 
-For hyperparameters tuning we define the grid of paramaters below and train an XGB Model on the downsampled data. We use cross validation as means to providing a reliable model that is not overfit, and allow the model to be trained in parallel.
+For hyperparameters tuning we define the grid of parameters below and train an XGB Model on the downsampled data. We use cross validation as means to providing a reliable model that is not overfit, and allow the model to be trained in parallel.
 
 ```{r}
 
@@ -688,8 +740,10 @@ print(paste("Final Random Forest Test AUC:", auc(rf_test_roc)))
 
 ```
 
+## Results
+Lets analyse the results of the overall study.
 
-## Future Directions:
+# Future Directions:
 
 **Model Improvement:**
 Further hyperparameter tuning using automated methods like grid search or random search could refine the model's accuracy. Additionally, exploring ensemble methods that combine predictions from several models might yield better results.
