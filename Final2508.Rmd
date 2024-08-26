@@ -278,6 +278,7 @@ calibrate::textxy(pca.h3k9me2$x[,1], pca.h3k9me2$x[,2], labs=grp.h3k9me2, cex=0.
 ### Pol III
 
 ```{r}
+
 # PCA analysis for PolII data
 cor.polii <- cor(PolII)
 pca.polii <- prcomp(cor.polii)
@@ -294,6 +295,7 @@ plot(pca.polii$x[,1], pca.polii$x[,2], col=grp.col.polii[grp.polii], pch=19, cex
 
 # Correctly label the samples for PolII
 calibrate::textxy(pca.polii$x[,1], pca.polii$x[,2], labs=grp.polii, cex=0.5)
+
 ```
 
 \newpage
@@ -369,7 +371,8 @@ ggplot(combined_key_genes_melt, aes(x = Timepoint, y = Expression, color = Gene,
   scale_color_manual(values = c("SOX2" = "blue", "NANOG" = "red"))
 
 ```
-The expression of SOX2 in the transcriptome starts at a slightly elevated level at 0hr, peaks around 6hr and then begins to steadily decline. The Proteome shows SOX2 starting slighlt postive expression at 0hr, peaks early at 1hr and thens shows similar decline. Both exhibit a general trend of initial upregulation followed by downregulation across time in both the proteome and transcriptome datasets. This suggests that the transcriptonal activtiy might be intially high to kickstart certain cellular proecess but is followed by a reduction as cells progress through differential.
+
+The expression of SOX2 in the transcriptome starts at a slightly elevated level at 0hr, peaks around 6hr and then begins to steadily decline. The Proteome shows SOX2 starting slight postive expression at 0hr, peaks early at 1hr and thens shows similar decline. Both exhibit a general trend of initial upregulation followed by downregulation across time in both the proteome and transcriptome datasets. This suggests that the transcriptonal activtiy might be intially high to kickstart certain cellular proecess but is followed by a reduction as cells progress through differential.
 
 \newpage
 
@@ -512,7 +515,8 @@ print(dim(downsampled_train_data))
 
 ```
 
-## Model Trainingns.
+## Model Training
+
 We train three machine learning models, SVM (with the radial kernel), Random Forest, and a Neural Network, using the balanced training dataset performance under balanced class distribution conditions.
 
 ### SVM
@@ -585,7 +589,7 @@ print(bagged_trees)
 
 ```
 
-### Gradient Boosting with Hyperparameter Tuning Using xgboost (using parallel processing)
+### Gradient Boosting with Hyperparameter Tuning Using XGBoost (using parallel processing)
 
 For hyperparameters tuning we define the grid of parameters below and train an XGB Model on the downsampled data. We use cross validation as means to providing a reliable model that is not overfit, and allow the model to be trained in parallel.
 
