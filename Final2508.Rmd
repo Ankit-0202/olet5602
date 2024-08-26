@@ -894,9 +894,12 @@ print(osn_rownames_nn)
 
 ### Model Improvement
 
-**Methods of mitigating Class Imbalance** - at the moment we have used Ensemble models, and downsampling to mitigate the massive class imbalance. It may be worth looking into other methods, or even not accounting for the imblance and training the models. Our results show clear overclassification of OSN which may be from the downsampling.
+#### Methods of mitigating Class Imbalance
 
-**Model Improvement:**
+At the moment we have used Ensemble models, and downsampling to mitigate the massive class imbalance. It may be worth looking into other methods, or even not accounting for the imblance and training the models. Our results show clear overclassification of OSN which may be from the downsampling.
+
+#### Model Improvement
+
 Further hyperparameter tuning using automated methods like grid search or random search could refine the model's accuracy. Additionally, exploring ensemble methods that combine predictions from several models might yield better results.
 
 ### Data Expansion
@@ -917,10 +920,3 @@ Theunissen, T. W., & Jaenisch, R. (2017). Molecular control of pluripotency and 
 Masui, S., et al. (2007). Pluripotency governed by Sox2 via regulation of Oct3/4 expression in mouse embryonic stem cells. *Nature Cell Biology*, 9(6), 625–635. [https://doi.org/10.1038/nature06015](https://doi.org/10.1038/nature06015)
 
 Yang, Y., et al. (2019). Dissecting the global dynamic molecular profiles of human fetal kidney development by single-cell RNA sequencing. *Cell Reports*, 28(8), 3254-3264.e5. [https://doi.org/10.1016/j.cell.2019.02.035](https://doi.org/10.1016/j.cell.2019.02.035)
-
-
-
-
-
-
-
