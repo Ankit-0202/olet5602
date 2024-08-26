@@ -819,7 +819,7 @@ OSN_target_genes
 Using `OSN_target_genes` as a comparison with model, suggests that SVN overclassifies target genes. This may suggest a need not for downsampling or it may suggest that there are other methods of dealing with class imabalance. 
 
 ```{r}
-length
+length(osn_labels)
 # Create a vector of all labels predicted as "OSN"
 osn_labels <- rownames(osn_predictions)
 
@@ -834,6 +834,8 @@ rf_predictions <- predict(tuned_rf_model, newdata = combined_data)
 
 # Create a logical vector for the specific label "OSN"
 is_osn_rf <- rf_predictions == "OSN"
+
+length(is_osn_rf)
 
 # Extract row names where the predicted label is "OSN"
 osn_rownames_rf <- rownames(combined_data)[is_osn_rf]
@@ -853,6 +855,7 @@ predicted_classes_xgb <- ifelse(xgb_predictions[, "OSN"] > 0.5, "OSN", "Other")
 
 # Create a logical vector for the specific label "OSN"
 is_osn_xgb <- predicted_classes_xgb == "OSN"
+length(is_osn_xgb)
 
 # Extract row names where the predicted label is "OSN"
 osn_rownames_xgb <- rownames(combined_data)[is_osn_xgb]
@@ -871,6 +874,7 @@ predicted_classes_nn <- colnames(nn_predictions)[apply(nn_predictions, 1, which.
 
 # Create a logical vector for the specific label "OSN"
 is_osn_nn <- predicted_classes_nn == "OSN"
+length(is_osn_nn)
 
 # Extract row names where the predicted label is "OSN"
 osn_rownames_nn <- rownames(combined_data)[is_osn_nn]
