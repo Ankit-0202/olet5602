@@ -722,6 +722,8 @@ plot(nn_model)
 
 ```
 
+The above plot indicates that the accuracy of the neural network during with a weight decay of 0.01 is improving whilst the number of hidden units increases. Conversly for the 0.1 weight decay, accuracy remains relatively stable and slightly declines as the number of hidden units increase, indicating that a higher weight decay may be too restrictive, preventing the model from fully leveraging the additional hidden units.
+
 ## Model Evaluation
 Predictions and Confusion Matrix
 We use the trained models to make predictions on the test set and evaluate their performance using confusion matrices.
@@ -827,6 +829,10 @@ osn_labels <- rownames(osn_predictions)
 print(osn_labels)
 
 ```
+
+
+The Random Forest model slightly outperforms the SVM model in identifying OSN genes, with a higher AUC socre of 0.8254 compared to SMV's score of 0.7669. This indicates a stronger overall classification performance. RF correctly identifies more true OSN genes but has a higher rate of false positives. In contrast, SVM has fewer false positives but slightly misses more true oSN genes. The choice between the two should be made based on whether too maximise true positive identification or minimizing false positives.
+
 
 ```{r}
 # Make predictions using the tuned Random Forest model
