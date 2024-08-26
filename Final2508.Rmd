@@ -812,8 +812,6 @@ OSN_target_genes
 
 ```
 
-
-
 Using `OSN_target_genes` as a comparison with the model, suggests that SVN overclassifies target genes. This may suggest a need not for downsampling or it may suggest that there are other methods of dealing with class imabalance. 
 
 ```{r}
