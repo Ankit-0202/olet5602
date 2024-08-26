@@ -326,7 +326,8 @@ pheatmap(top_genes_proteome, cluster_rows = TRUE, cluster_cols = TRUE,
          color = colorRampPalette(c("blue", "white", "darkred"))(50),
          main = "Heatmap of Top 100 Most Variable Genes in Proteome")
 ```
-In the above heatmap regarding the top 100 most variable genes within the transcriptome dataset, from the 1hr to 6hr time period most genes exhibit lower levels of expression, suggesting that many of the top variable genes are not highly active immediately after differentiation begins. This ramps up at later time points, particularity 48hr and 72hr showing distinct patterns where some genes are highly expressed while others remain low. This suggest high activity meaning certain genes are playing critical roles in later stages of differentiation. The key differentiation between the transcriptome and proteome heatmaps are the levels of neutral activity during the inital hours with Proteome having a higher level of activtiy throughout most time periods.
+
+In the above heatmap regarding the top 100 most variable genes within the transcriptome dataset, from the 1hr to 6hr time period most genes exhibit lower levels of expression, suggesting that many of the top variable genes are not highly active immediately after differentiation begins. This ramps up at later time points, particularity 48hr and 72hr showing distinct patterns where some genes are highly expressed while others remain low. This suggest high activity meaning certain genes are playing critical roles in later stages of differentiation. The key differentiation between the transcriptome and proteome heatmaps are the levels of neutral activity during the inital hours with Proteome having a higher level of activity throughout most time periods.
 
 
 
