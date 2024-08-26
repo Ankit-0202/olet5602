@@ -537,31 +537,7 @@ rf_model <- randomForest(label ~ ., data = downsampled_train_data, ntree = 1000)
 
 ```
 
-
-```{r}
-
-
-# Extract feature importance
-importance_rf <- importance(rf_model)
-
-# Create a data frame for plotting
-feature_importance_df <- data.frame(
-  Feature = rownames(importance_rf),
-  Importance = importance_rf[, "%IncMSE"]
-)
-
-# Plot feature importance using ggplot2
-ggplot(feature_importance_df, aes(x = reorder(Feature, Importance), y = Importance)) +
-  geom_bar(stat = "identity") +
-  theme_minimal() +
-  labs(title = "Feature Importance from Random Forest Model",
-       x = "Feature",
-       y = "Increase in MSE") +
-  coord_flip()
-
-```
-
-Here we improve on our model by performing cross-validation while training the Random Forest, and finetuning our hyperaparamters as to not over fit the model.
+Here we improve on our model by performing cross-validation while training the Random Forest, and finetuning our hyperaparamaters as to not over fit the model.
 
 ```{r}
 
@@ -647,7 +623,7 @@ train_control <- trainControl(
 # Train xgboost model with tuning
 xgb_model_tuned <- train(
   label ~ .,
-  data = downsampled_train_data,
+  data = train_data, # Run on full training set
   method = "xgbTree",
   trControl = train_control,
   tuneGrid = tune_grid_xgb,
