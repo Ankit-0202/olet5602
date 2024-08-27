@@ -88,6 +88,7 @@ suppressPackageStartupMessages({
     library(reshape2)
     library(kernlab)
     library(caret)
+    library(caretEnsemble)
     library(pheatmap)
     library(randomForest)
     library(adabag)
@@ -525,8 +526,28 @@ The first model we train is a SVM with a radial curve. SVMS are well suited to w
 
 ```{r}
 
+set.seed(123)
+
 # Train an SVM model on the downsampled training data with radial basis function kernel
 svm_model <- svm(label ~ ., data = downsampled_train_data, kernel = "radial", probability = TRUE)
+
+svm_predictions <- predict(svm_model, test_data, probability = TRUE)
+
+true_labels <- test_data$label
+
+# Generate a confusion matrix
+confusion <- confusionMatrix(svm_predictions, true_labels)
+
+# Extract accuracy, recall, precision, and F1 score
+accuracy <- confusion$overall['Accuracy']
+recall <- confusion$byClass['Sensitivity']  # Sensitivity is the same as recall
+precision <- confusion$byClass['Precision']
+f1_score <- confusion$byClass['F1']
+
+cat("Testing Accuracy: ", round(accuracy, 4), "\n")
+cat("Recall: ", round(recall, 4), "\n")
+cat("Precision: ", round(precision, 4), "\n")
+cat("F1 Score: ", round(f1_score, 4), "\n")
 
 ```
 
