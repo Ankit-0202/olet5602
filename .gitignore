@@ -1,6 +1,13 @@
 # History files
 .Rhistory
 .Rapp.history
+Final2508_files/
+assets/
+index_files/
+sydney_xaringan/
+.Rproj.user/
+pico.save
+
 
 # Session Data files
 .RData

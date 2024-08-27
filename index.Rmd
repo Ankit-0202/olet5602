@@ -1,0 +1,136 @@
+---
+title: "Novel Factor Target Gene Prediction through Multi-Omics Datasets"
+subtitle: "OLET5602 Final Project"
+author: "A. Kapoor, D. Langreiter, S. Udit, L. Richard"
+date: "University of Sydney | `r format(Sys.time(), '%B, %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "assets/sydney-fonts.css", "assets/sydney.css"]
+    self_contained: false # if true, fonts will be stored locally
+    nature:
+      beforeInit: ["assets/remark-zoom.js"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9' # alternatives '16:9' or '4:3' or others e.g. 13:9
+      navigation:
+        scroll: true # enable slide transitions by scrolling
+---
+
+## Introduction
+--- 
+
+
+---
+
+## Study Goals (formerly Target Prediction and Validation)
+--- 
+
+---
+class: segue-yellow
+
+## Data Description and Exporation (TOPIC)
+
+---
+
+## Data Exploration
+--- 
+
+---
+
+## Transcriptome
+--- 
+
+
+---
+
+## Proteome
+--- 
+
+
+---
+
+## Epigenome
+
+### 6 Histone Markers
+--- 
+
+
+---
+class: segue-yellow
+
+## Target Gene Visualisation (TOPIC)
+
+
+---
+
+## Heatmap
+--- 
+
+---
+
+## Plot Over Time
+### Time Course Expression
+--- 
+
+---
+class: segue-yellow
+
+## Classification Models (TOPIC)
+
+
+---
+
+## SVM
+--- 
+
+### Model Evaluation
+
+---
+
+## Random Forest
+--- 
+
+### Model Evaluation
+
+---
+
+## XGBoost
+--- 
+
+### Model Evaluation
+
+---
+
+## Neural Networks
+--- 
+
+### Model Evaluation
+
+---
+
+## Bagged Cart
+--- 
+
+---
+class: segue-yellow
+
+## Discussion (TOPIC)
+
+
+---
+
+## Results
+--- 
+
+---
+
+## Future Work
+--- 
+
+
+---
+class: segue
+
+
+## Thank You! (TOPIC)
