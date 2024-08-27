@@ -51,7 +51,7 @@ For the Purposes of this study we refer to OSN Labels as genes that target for t
 
 - **Proteome:** Time-course protein expression profiles during ESC differentiation.
 
-- **Epigenome:** Time-course ESC differentation epigonme profiles of 6 histone marks.
+- **Epigenome:** Time-course ESC differentiation epigenome profiles of 6 histone marks.
 
 \newpage
 
