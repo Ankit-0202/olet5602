@@ -804,6 +804,7 @@ print(paste("Final Random Forest Test AUC:", auc(rf_test_roc)))
 ```
 
 ## Results
+
 Lets analyse the results of the overall study as a comparison with the with the previous study. 
 
 The first and main outcome of the study is classifying target genes as target genes. However it may useful to get a probabilities for each gene. This was part of the motivation to use SVM as our first and main source of classification. Below is a table with the probabilities. Potentially using this 
@@ -849,9 +850,10 @@ head(osn_labels, 100)
 
 The Random Forest model slightly outperforms the SVM model in identifying OSN genes, with a higher AUC socre of 0.8254 compared to SMV's score of 0.7669. This indicates a stronger overall classification performance. RF correctly identifies more true OSN genes but has a higher rate of false positives. In contrast, SVM has fewer false positives but slightly misses more true oSN genes. The choice between the two should be made based on whether too maximise true positive identification or minimizing false positives.
 
-Probabilities
+### Probabilities
 
 ```{r}
+
 # Make predictions using the Random Forest model
 rf_predictions <- predict(tuned_rf_model, newdata = combined_data)
 
@@ -918,7 +920,6 @@ Incorporating additional omics layers, such as metabolomics or additional transc
 ### Integration with Clinical Data
 
 Linking omics profiles with clinical outcomes could also be explored to improve the translational impact of the research.
-
 
 \newpage
 
