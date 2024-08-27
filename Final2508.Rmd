@@ -677,7 +677,7 @@ f1_score_bagged <- confusion_matrix_bagged$byClass['F1']
 
 cat("Bagged Trees Model Metrics:\n")
 cat("Accuracy:", accuracy_bagged, "\n")
-cat("Precision:", precision_bagged, "\n")
+cat("P recision:", precision_bagged, "\n")
 cat("Recall:", recall_bagged, "\n")
 cat("F1 Score:", f1_score_bagged, "\n")
 
@@ -944,71 +944,7 @@ OSN_target_genes
 
 ```
 
-Using `OSN_target_genes` as a comparison with the model, suggests that SVN overclassifies target genes. This may suggest a need not for downsampling or it may suggest that there are other methods of dealing with class imabalance. 
-
-```{r}
-
-# Create a vector of all labels predicted as "OSN"
-osn_labels <- rownames(svm_predictions)
-
-
-length(osn_labels)
-head(osn_labels, 100)
-
-```
-
-
-The Random Forest model slightly outperforms the SVM model in identifying OSN genes, with a higher AUC socre of 0.8254 compared to SMV's score of 0.7669. This indicates a stronger overall classification performance. RF correctly identifies more true OSN genes but has a higher rate of false positives. In contrast, SVM has fewer false positives but slightly misses more true oSN genes. The choice between the two should be made based on whether too maximise true positive identification or minimizing false positives.
-
-### Probabilities
-
-```{r}
-
-# Make predictions using the Random Forest model
-rf_predictions <- predict(tuned_rf_model, newdata = combined_data)
-
-# Combine predictions with the original data and probabilities
-results_rf <- data.frame(
-  Actual_Label = combined_data$label,
-  Predicted_Label = predict(tuned_rf_model, newdata = combined_data)
-)
-
-# Display the table with combined data, actual labels, and probabilities
-print(head(results_rf))
-
-```
-
-
-
-```{r}
-
-# Filter rows where the predicted label is "OSN"
-osn_predictions_rf <- results_rf[results_rf$Predicted_Label == "OSN", ]
-
-# List of rownames where predicted label is "OSN"
-osn_rownames_rf <- rownames(combined_data)[results_rf$Predicted_Label == "OSN"]
-length(osn_rownames_rf)
-head(osn_rownames_rf, 100)
-```
-
-
-```{r}
-
-xgb_predictions <- predict(xgb_model_tuned, newdata = combined_data)
-
-print(str(xgb_predictions))
-
-predicted_classes_xgb <- ifelse(xgb_predictions > 0.5, "OSN", "Other")
-
-is_osn_xgb <- predicted_classes_xgb == "OSN"
-print(length(is_osn_xgb))
-
-osn_rownames_xgb <- rownames(combined_data)[is_osn_xgb]
-
-length(osn_rownames_xgb)
-head(osn_rownames_xgb, 100)
-
-```
+Roughly we have 2000 target genes predicted for each of our models compared to 400 from the previus study. This may because of the higher time resolution of the previous study or potentially other reasons.
 
 
 ## Future Directions:

@@ -507,7 +507,7 @@ plot(img)
 .pull-left[
 ```{r, message=FALSE, echo=FALSE}
 # Read and display the image
-img <- image_read("assets/hypertuning_xgb.png")
+img <- image_read("assets/confusion_xgb.png")
 plot(img)
 
 ```
