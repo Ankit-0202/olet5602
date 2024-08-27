@@ -83,7 +83,6 @@ set.seed(123)
 ]
 
 
-
 ---
 
 ## Study Procedure (formerly Target Prediction and Validation)
@@ -119,6 +118,8 @@ class: segue-yellow
 ## Transcriptome
 --- 
 
+.pull-left[
+
 ```{r transcriptome_pca, message=FALSE, echo=FALSE}
 # PCA analysis on the correlation matrix of the transcriptome data
 cor.mat <- cor(Transcriptome)
@@ -138,11 +139,21 @@ plot(pca.mat$x[,1], pca.mat$x[,2], col=grp.col[grp], pch=19, cex=2,
 calibrate::textxy(pca.mat$x[,1], pca.mat$x[,2], labs=grp, cex=0.5)
 
 ```
+]
+
+.pull-right[
+**Variance Explained:**
+- PC1 (first principal component) 61.4%
+
+- PC2 (second principal component) 29.9%
+
+]
 
 ---
 
 ## Proteome
 --- 
+.pull-left[
 ```{r proteome_pca, message=FALSE, echo=FALSE}
 cor.proteome <- cor(Proteome)
 pca.proteome <- prcomp(cor.proteome)
@@ -162,6 +173,14 @@ plot(pca.proteome$x[,1], pca.proteome$x[,2], col=grp.col[grp], pch=19, cex=2,
      ylab=paste0("PC2 (", round(summary(pca.proteome)$importance[2,2]*100,1), "% variance)"))
 
 ```
+]
+
+.pull-right[
+**Variance Explained:**
+- PC1 (first principal component) explains 67.6% of the variance, capturing the majority of the variation in the proteome data.
+
+- PC2 (second principal component) explains 21% of the variance, adding another layer of explanation to the differences in protein expression.
+]
 
 ---
 
@@ -239,6 +258,7 @@ pheatmap(top_genes_transcriptome, cluster_rows = TRUE, cluster_cols = TRUE,
 ]
 
 .pull-right[
+*Similarly*
 - 1 - 6 hr genes exhibit lower levels of expression
 - Suggest not many of top variable genes are not highly active immediately after differentiation.
 
@@ -350,7 +370,7 @@ class: segue-yellow
 ---
 
 ## SVM Roc
-
+--- 
 
 ```{r, message=FALSE, echo=FALSE}
 # Read and display the image
@@ -387,6 +407,19 @@ plot(img)
 
 ---
 
+## Random Forest Roc
+--- 
+
+```{r, message=FALSE, echo=FALSE}
+# Read and display the image
+img <- image_read("assets/roc_rf.png")
+plot(img)
+
+```
+
+
+---
+
 ## Bagged Decision Trees (Ensemble II)
 --- 
 
@@ -410,6 +443,18 @@ plot(img)
 
 ---
 
+## Bagged Decision Trees Roc
+--- 
+
+```{r, message=FALSE, echo=FALSE}
+# Read and display the image
+img <- image_read("assets/roc_bagged_dt.png")
+plot(img)
+
+```
+
+---
+
 ## XGBoost (Ensemble III)
 --- 
 
@@ -425,11 +470,24 @@ plot(img)
 
 .pull-right[
 ### Model Evaluation
-
-
-
+- Accuracy: 0.9889841
+- Precision: NA
+- Recall: 0
+- F1 Score: NA
 
 ]
+
+---
+
+## XGBoost Roc
+--- 
+
+```{r, message=FALSE, echo=FALSE}
+# Read and display the image
+img <- image_read("assets/roc_xgb.png")
+plot(img)
+
+```
 
 ---
 
@@ -443,7 +501,6 @@ class: segue-yellow
 
 ## Discussion
 
-
 ---
 
 ## Results
@@ -452,7 +509,7 @@ class: segue-yellow
 - **Final Choice of Model: XGB**
   - Ensemble Method/Slow Learner/Class Imbalance
   - Most robust model
-- Predicts Approximately 2000 Targts
+- Predicts Approximately 2000 Target
   - This is much higher than 400 from the previous study. However, accuracy is not low!?
   - May be due to fewer data points or current downsampling.
 
@@ -472,4 +529,4 @@ class: segue-yellow
 class: segue
 
 
-## Thank You! (TOPIC)
+## Thank You!
