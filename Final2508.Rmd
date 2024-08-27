@@ -112,7 +112,7 @@ set.seed(123)
 
 Before beginning data analysis it is important understand and investigate the data. The goal of this report is to predict to predict novel transcription factor target genes from multi-omics data. For each of our datasets, one can look at the structure of the data and perform PCA Analysis as means of identifying trends in the dataset.
 
-Below is the temporal expression of the Transcriptome, Proteome, and Epigiome datasets at timepoints 0, 1, 6, 12, 24, 36, 48 hours.
+Below is the temporal expression of the Transcriptome, Proteome and Epigiome datasets at timepoints 0, 1, 6, 12, 24, 36, 48 hours.
 
 ### Transcriptome
 
@@ -385,7 +385,7 @@ The expression of SOX2 in the transcriptome starts at a slightly elevated level 
 
 # Classification
 
-The main challenge of this study will be to classify. The task is to classify, genes as a target gene for a subset of the target genes identified in a larger previous study (Kim et al., 2020) on the same topic: which identified targets over multiomics datasets (TF ChIP-seq, transcriptome, epigenome, proteome, and 3D chromatin conformation data). 
+The main challenge of this study will be to classify. The task is to classify, genes as a target gene for a subset of the target genes identified in a larger previous study (Kim et al., 2020) on the same topic: which identified targets over multiomics datasets (TF ChIP-seq, transcriptome, epigenome, proteome and 3D chromatin conformation data). 
 
 ## Filter and Combine Datasets
 
@@ -524,7 +524,7 @@ print(dim(downsampled_train_data))
 
 ## Model Training
 
-We train three machine learning models, SVM (with the radial kernel), Random Forest, and a Neural Network, using the balanced training dataset performance under balanced class distribution conditions.
+We train three machine learning models, SVM (with the radial kernel), Random Forest and a Neural Network, using the balanced training dataset performance under balanced class distribution conditions.
 
 ### SVM
 
@@ -544,7 +544,7 @@ true_labels <- test_data$label
 # Generate a confusion matrix
 confusion <- confusionMatrix(svm_predictions, true_labels)
 
-# Extract accuracy, recall, precision, and F1 score
+# Extract accuracy, recall, precision and F1 score
 accuracy <- confusion$overall['Accuracy']
 recall <- confusion$byClass['Sensitivity']  # Sensitivity is the same as recall
 precision <- confusion$byClass['Precision']
@@ -575,7 +575,7 @@ auc(roc_curve)
 
 ### Random Forest
 
-Here we train our second model on the down sampled data. The dataset performed best with better with a larger number of trees, and so we have used 1000 for our number of trees. 
+Here we train our second model on the down sampled data. The dataset performed best with better with a greater number of trees, and so we have used 1000 for our number of trees. 
 
 
 ```{r}
