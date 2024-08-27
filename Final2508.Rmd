@@ -553,6 +553,21 @@ cat("Precision: ", round(precision, 4), "\n")
 cat("F1 Score: ", round(f1_score, 4), "\n")
 
 ```
+Now lets visualise this uding a ROC Plot.
+
+```{r roc_svm}
+svm_prob <- attr(svm_predictions, "probabilities")[,2]
+
+roc_curve <- roc(test_data$label, svm_prob)
+
+plot(roc_curve, col = "blue", lwd = 2, main = "ROC Curve for SVM Model")
+
+# Add AUC to the plot
+auc(roc_curve)
+
+
+```
+
 
 ### Random Forest
 
@@ -562,7 +577,6 @@ Here we train our second model on the down sampled data. The dataset performed b
 ```{r}
 # Train a Random Forest model
 rf_model <- randomForest(label ~ ., data = downsampled_train_data, ntree = 1000)
-
 ```
 
 Here we improve on our model by performing cross-validation while training the Random Forest, and fine-tuning our hyperparameters as to not over fit the model.
@@ -586,15 +600,41 @@ Before conducting proper evaluation later in this report, we can briefly evaluat
 
 ```{r}
 
-rf_predictions <- predict(tuned_rf_model, newdata = test_data, type = "prob")
-roc_curve <- roc(response = test_data$label, predictor = as.numeric(rf_predictions[,2]))
+# Predict probabilities on the testing data using the tuned Random Forest model
+rf_predictions <- predict(tuned_rf_model, newdata = test_data)
 
-# Plot ROC curve
-plot(roc_curve, main = "ROC Curve for Random Forest")
+confusion_matrix <- confusionMatrix(rf_predictions, test_data$label)
+
+# Extract and display metrics
+accuracy <- confusion_matrix$overall['Accuracy']
+precision <- confusion_matrix$byClass['Precision']
+recall <- confusion_matrix$byClass['Recall']
+f1_score <- confusion_matrix$byClass['F1']
+
+cat("Accuracy:", accuracy, "\n")
+cat("Precision:", precision, "\n")
+cat("Recall:", recall, "\n")
+cat("F1 Score:", f1_score, "\n")
 
 ```
 
 Upon viewing the performance of the model above, it was clear that more could be done to optimise the model. As a result, the team decided to experiment with other models to evaluate the effectiveness of variations of standard random forest models.
+
+Lastly re-predicting for ROC
+
+```{r}
+# Predict probabilities on the testing data using the tuned Random Forest model
+rf_prob_predictions <- predict(tuned_rf_model, newdata = test_data, type = "prob")
+
+rf_pred_probs <- rf_prob_predictions[,2]
+
+roc_curve_rf <- roc(response = test_data$label, predictor = rf_pred_probs)
+
+# Plot ROC curve
+plot(roc_curve_rf, main = "ROC Curve for Random Forest")
+
+
+```
 
 ### Bagging with Bagged Trees
 
@@ -612,6 +652,28 @@ bagged_trees <- train(
 print(bagged_trees)
 
 ```
+
+#### Evaluation of Bagged Trees
+
+Bagging is a means of of ensemble training. We have choosen decision trees as the base model. 
+```{r}
+bagged_trees_predictions <- predict(bagged_trees, newdata = test_data)
+
+confusion_matrix_bagged <- confusionMatrix(bagged_trees_predictions, test_data$label)
+
+accuracy_bagged <- confusion_matrix_bagged$overall['Accuracy']
+precision_bagged <- confusion_matrix_bagged$byClass['Precision']
+recall_bagged <- confusion_matrix_bagged$byClass['Recall']
+f1_score_bagged <- confusion_matrix_bagged$byClass['F1']
+
+cat("Bagged Trees Model Metrics:\n")
+cat("Accuracy:", accuracy_bagged, "\n")
+cat("Precision:", precision_bagged, "\n")
+cat("Recall:", recall_bagged, "\n")
+cat("F1 Score:", f1_score_bagged, "\n")
+
+```
+
 
 ### Gradient Boosting with Hyperparameter Tuning Using XGBoost (using parallel processing)
 
@@ -645,7 +707,6 @@ train_control <- trainControl(
   classProbs = TRUE,  # Needed for ROC and AUC calculations
   selectionFunction = "best"  # Chooses the best tuning parameters based on ROC
 )
-
 
 # Train xgboost model with tuning
 xgb_model_tuned <- train(
@@ -711,6 +772,41 @@ ggplot(data = filtered_results, aes(x = readable_interaction, y = ROC)) +
 ```
 
 It is notable that for all of the objectively 'high-performing' models (those with an ROC AUC greater than 0.5), there wasn't much fluctuation beyond a score of ± 0.05 about 0.8, or a 6.25% variation. Therefore, the hypothesis that hypertuning the model would improve its performance does not hold, as the cost of generating such a model does not warrant the marginal increase in performance.
+
+Lastly lets evaluate performance on the validation data.
+
+```{r}
+
+set.seed(123)
+xgb_prob <- predict(xgb_model_tuned, newdata = test_data, type = "prob")
+
+xgb_pred_probs <- xgb_prob[,2]
+
+roc_curve_xgb <- roc(response = test_data$label, predictor = xgb_pred_probs)
+
+plot(roc_curve_xgb, main = "ROC Curve for XGBoost")
+
+```
+
+Lastly the metrics.
+
+```{r}
+xgb_predictions <- predict(xgb_model_tuned, newdata = test_data)
+
+confusion_matrix_xgb <- confusionMatrix(xgb_predictions, test_data$label)
+
+accuracy_xgb <- confusion_matrix_xgb$overall['Accuracy']
+precision_xgb <- confusion_matrix_xgb$byClass['Precision']
+recall_xgb <- confusion_matrix_xgb$byClass['Recall']
+f1_score_xgb <- confusion_matrix_xgb$byClass['F1']
+
+cat("XGBoost Model Metrics:\n")
+cat("Accuracy:", accuracy_xgb, "\n")
+cat("Precision:", precision_xgb, "\n")
+cat("Recall:", recall_xgb, "\n")
+cat("F1 Score:", f1_score_xgb, "\n")
+
+```
 
 ## Extended Model Training - Neural Networks
 
