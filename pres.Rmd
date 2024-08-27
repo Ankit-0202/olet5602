@@ -520,7 +520,7 @@ class: segue-yellow
 --- 
 
 - Class Imbalance Solutions
-  - Futher EDA to decide other means of removing data, or possibly leaving data imbalanced.
+  - Further EDA to decide other means of removing data, or possibly leaving data imbalanced.
 
 - Further Evaluation (Precision, Recall, F1-Score and AUC-ROC)
 
