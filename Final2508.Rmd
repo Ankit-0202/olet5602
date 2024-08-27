@@ -116,6 +116,7 @@ Below is the temporal expression of the Transcriptome, Proteome, and Epigiome da
 ### Transcriptome
 
 ```{r}
+
 head(Transcriptome)
 dim(Transcriptome)
 colnames(Transcriptome)
@@ -142,6 +143,7 @@ calibrate::textxy(pca.mat$x[,1], pca.mat$x[,2], labs=grp, cex=0.5)
 ### Proteome
 
 ```{r}
+
 cor.proteome <- cor(Proteome)
 pca.proteome <- prcomp(cor.proteome)
 summary(pca.proteome)$importance
@@ -166,6 +168,7 @@ plot(pca.proteome$x[,1], pca.proteome$x[,2], col=grp.col[grp], pch=19, cex=2,
 ### H3K4ME3
 
 ```{r}
+
 # PCA analysis on the correlation matrix of the H3K4me3 data
 cor.h3k4me3 <- cor(H3K4me3)
 pca.h3k4me3 <- prcomp(cor.h3k4me3)
@@ -235,6 +238,7 @@ calibrate::textxy(pca.h3k27ac$x[,1], pca.h3k27ac$x[,2], labs=grp.h3k27ac, cex=0.
 ### H3K4ME1
 
 ```{r}
+
 # PCA analysis for H3K4me1 data
 cor.h3k4me1 <- cor(H3K4me1)
 pca.h3k4me1 <- prcomp(cor.h3k4me1)
@@ -251,6 +255,7 @@ plot(pca.h3k4me1$x[,1], pca.h3k4me1$x[,2], col=grp.col.h3k4me1[grp.h3k4me1], pch
 
 # Correctly label the samples for H3K4me1
 calibrate::textxy(pca.h3k4me1$x[,1], pca.h3k4me1$x[,2], labs=grp.h3k4me1, cex=0.5)
+
 ```
 
 ### H3K9ME2
@@ -340,8 +345,6 @@ Below is a graph
 
 
 ```{r}
-library(reshape2)
-library(ggplot2)
 
 # Subset key genes for visualization
 key_genes <- c("SOX2", "NANOG") 
@@ -694,7 +697,6 @@ filtered_results <- results[results$ROC > 0.5,]
 filtered_results$readable_interaction <- with(filtered_results, paste("Depth:", max_depth, "ETA:", eta, "Gamma:", gamma, sep=" "))
 
 # Plot the performance focusing on ROC AUC values above 0.5
-library(ggplot2)
 ggplot(data = filtered_results, aes(x = readable_interaction, y = ROC)) +
   geom_point(aes(color = as.factor(nrounds))) +
   geom_line(aes(group = readable_interaction, color = as.factor(nrounds))) +
