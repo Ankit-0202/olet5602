@@ -406,6 +406,17 @@ plot(img)
 ]
 
 ---
+## Random Forest Hypertuning
+---
+
+```{r, message=FALSE, echo=FALSE}
+# Read and display the image
+img <- image_read("assets/hypertuning_rf.jpg")
+plot(img)
+
+```
+
+---
 
 ## Random Forest Roc
 --- 
@@ -479,6 +490,38 @@ plot(img)
 
 ---
 
+## XGBoost Model Hypertuning
+--- 
+
+```{r, message=FALSE, echo=FALSE}
+# Read and display the image
+img <- image_read("assets/hypertuning_xgb.png")
+plot(img)
+
+```
+
+## XGBoost Confusion Matrix
+--- 
+.pull-left[
+```{r, message=FALSE, echo=FALSE}
+# Read and display the image
+img <- image_read("assets/hypertuning_xgb.png")
+plot(img)
+
+```
+
+]
+
+.pull-right[
+- **True Positives (TP):** 7 genes were correctly predicted as "OSN" by the SVM model.
+- **False Positives (FP):** 2 genes were incorrectly predicted as "Other" but were actually "OSN".
+- **True Negatives (TN):** 614 genes were correctly predicted as "Other".
+- **False Negatives (FN):** 194 genes were incorrectly predicted as "OSN" but were actually "Other".
+]
+
+
+---
+
 ## XGBoost Roc
 --- 
 
@@ -489,12 +532,15 @@ plot(img)
 
 ```
 
----
 
-## Neural Networks
---- 
+## Comparision
 
-- Trained a model, but...
+The Random Forest model performed slightly better over the SVM model, with 8 correct predictions for "OSN" compared to SVM’s 7. However, it also incorrectly predicted 208 genes as "Other" when they were actually "OSN"
+
+Possible reasons for this could include:
+- Test set containing a significant imbalance between the OSN and other classes, with only 9 OSN samples and 808 Other samples. This imbalance could explain why both models struggle to accurately predict the minority class. (OSN)
+- Both models perform well in predicting Other Class, with both RF and SVM both achieving high true negative rates.
+
 
 ---
 class: segue-yellow
