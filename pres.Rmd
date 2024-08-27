@@ -407,7 +407,7 @@ plot(img)
 
 ---
 ## Random Forest Hypertuning
----
+--- 
 
 ```{r, message=FALSE, echo=FALSE}
 # Read and display the image
@@ -521,6 +521,7 @@ plot(img)
 
 
 ---
+
 
 ## XGBoost Roc
 --- 
