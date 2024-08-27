@@ -75,6 +75,7 @@ htmltools::tags$style("
 ```
 
 ```{r}
+
 # Load necessary packages and data
 load("Final_Project_ESC.RData", verbose = TRUE)
 
@@ -261,6 +262,7 @@ calibrate::textxy(pca.h3k4me1$x[,1], pca.h3k4me1$x[,2], labs=grp.h3k4me1, cex=0.
 ### H3K9ME2
 
 ```{r}
+
 # PCA analysis for H3K9me2 data
 cor.h3k9me2 <- cor(H3K9me2)
 pca.h3k9me2 <- prcomp(cor.h3k9me2)
@@ -301,6 +303,7 @@ plot(pca.polii$x[,1], pca.polii$x[,2], col=grp.col.polii[grp.polii], pch=19, cex
 
 # Correctly label the samples for PolII
 calibrate::textxy(pca.polii$x[,1], pca.polii$x[,2], labs=grp.polii, cex=0.5)
+
 
 ```
 
@@ -376,19 +379,21 @@ ggplot(combined_key_genes_melt, aes(x = Timepoint, y = Expression, color = Gene,
 
 ```
 
-The expression of SOX2 in the transcriptome starts at a slightly elevated level at 0hr, peaks around 6hr and then begins to steadily decline. The Proteome shows SOX2 starting slight postive expression at 0hr, peaks early at 1hr and thens shows similar decline. Both exhibit a general trend of initial upregulation followed by downregulation across time in both the proteome and transcriptome datasets. This suggests that the transcriptonal activtiy might be intially high to kickstart certain cellular proecess but is followed by a reduction as cells progress through differential.
+The expression of SOX2 in the transcriptome starts at a slightly elevated level at 0hr, peaks around 6hr and then begins to steadily decline. The Proteome shows SOX2 starting slight postive expression at 0hr, peaks early at 1hr and thens shows similar decline. Both exhibit a general trend of initial upregulation followed by downregulation across time in both the proteome and transcriptome datasets. This suggests that the transcriptional activity might be initially high to kickstart certain cellular process but is followed by a reduction as cells progress through differential.
 
 \newpage
 
 # Classification
+
 The main challenge of this study will be to classify. The task is to classify, genes as a target gene for a subset of the target genes identified in a larger previous study (Kim et al., 2020) on the same topic: which identified targets over multiomics datasets (TF ChIP-seq, transcriptome, epigenome, proteome, and 3D chromatin conformation data). 
 
 ## Filter and Combine Datasets
+
 In order to properly model and predicting novel transcription factors target genes we join the 8 datasets together and perform our calculations on the larger dataset.
 
 To ensure consistency across datasets, we filter each dataset to include only the common genes present in all omics layers. We then combine these filtered datasets into a single data frame for further analysis.
 
-*We can do this as the timepoints for all the datasets are consistent. Allowing for prediction on on gene information from different omics layers.*
+*This can be done as the timepoints for all the datasets are consistent. Allowing for prediction on on gene information from different omics layers.*
 
 ```{r}
 # Verify all data has the same set of genes
@@ -450,12 +455,10 @@ combined_data <- data.frame(combined_data)
 combined_data$label <- factor(label)
 ```
 
-
 ```{r}
 # Number of genes which are known to be targets for Sox2 and Nanog
 length(OSN_target_genes_subset)
 ```
-
 
 We have 100 known target genes for OSN, and as seen below the we have 95 genes that have been identified as novel Sox2/Nanog targets on our combined filtered dataset.
 
@@ -553,9 +556,11 @@ cat("Precision: ", round(precision, 4), "\n")
 cat("F1 Score: ", round(f1_score, 4), "\n")
 
 ```
-Now lets visualise this uding a ROC Plot.
+
+Now, it is possible to visualise this using a ROC Plot.
 
 ```{r roc_svm}
+
 svm_prob <- attr(svm_predictions, "probabilities")[,2]
 
 roc_curve <- roc(test_data$label, svm_prob)
@@ -564,7 +569,6 @@ plot(roc_curve, col = "blue", lwd = 2, main = "ROC Curve for SVM Model")
 
 # Add AUC to the plot
 auc(roc_curve)
-
 
 ```
 
@@ -575,8 +579,10 @@ Here we train our second model on the down sampled data. The dataset performed b
 
 
 ```{r}
+
 # Train a Random Forest model
 rf_model <- randomForest(label ~ ., data = downsampled_train_data, ntree = 1000)
+
 ```
 
 Here we improve on our model by performing cross-validation while training the Random Forest, and fine-tuning our hyperparameters as to not over fit the model.
@@ -594,6 +600,7 @@ tuned_rf_model <- train(label ~ ., data = downsampled_train_data,
 
 # Plotting tuning results
 plot(tuned_rf_model$finalModel, main="Random Forest Tuning")
+
 ```
 
 Before conducting proper evaluation later in this report, we can briefly evaluate the performance of this model.
@@ -620,9 +627,10 @@ cat("F1 Score:", f1_score, "\n")
 
 Upon viewing the performance of the model above, it was clear that more could be done to optimise the model. As a result, the team decided to experiment with other models to evaluate the effectiveness of variations of standard random forest models.
 
-Lastly re-predicting for ROC
+Lastly, re-predicting for ROC:
 
 ```{r}
+
 # Predict probabilities on the testing data using the tuned Random Forest model
 rf_prob_predictions <- predict(tuned_rf_model, newdata = test_data, type = "prob")
 
@@ -657,6 +665,7 @@ print(bagged_trees)
 
 Bagging is a means of of ensemble training. We have choosen decision trees as the base model. 
 ```{r}
+
 bagged_trees_predictions <- predict(bagged_trees, newdata = test_data)
 
 confusion_matrix_bagged <- confusionMatrix(bagged_trees_predictions, test_data$label)
@@ -791,6 +800,7 @@ plot(roc_curve_xgb, main = "ROC Curve for XGBoost")
 Lastly the metrics.
 
 ```{r}
+
 xgb_predictions <- predict(xgb_model_tuned, newdata = test_data)
 
 confusion_matrix_xgb <- confusionMatrix(xgb_predictions, test_data$label)
