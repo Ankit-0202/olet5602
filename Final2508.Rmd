@@ -848,7 +848,9 @@ plot(nn_model)
 The above plot indicates that the accuracy of the neural network during with a weight decay of 0.01 is improving whilst the number of hidden units increases. Conversly for the 0.1 weight decay, accuracy remains relatively stable and slightly declines as the number of hidden units increase, indicating that a higher weight decay may be too restrictive, preventing the model from fully leveraging the additional hidden units.
 
 ## Model Evaluation
-Predictions and Confusion Matrix
+
+### Predictions and Confusion Matrix
+
 We use the trained models to make predictions on the test set and evaluate their performance using confusion matrices.
 
 ```{r}
